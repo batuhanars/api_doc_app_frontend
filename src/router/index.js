@@ -14,9 +14,14 @@ const routes = [
         component: Main,
         children: [
             {
-                path: '',
-                name: 'Panel',
-                component: () => import('../views/Panel.vue'),
+                path: ':app',
+                children: [
+                    {
+                        path: '',
+                        name: 'Panel',
+                        component: () => import('../views/Panel.vue'),
+                    },
+                ],
             },
         ],
     },

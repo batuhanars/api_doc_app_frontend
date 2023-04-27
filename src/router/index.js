@@ -10,6 +10,11 @@ const routes = [
     },
     {
         path: '/:project',
+        name: 'Apps',
+        component: () => import('../views/Apps.vue'),
+    },
+    {
+        path: '/:project',
         name: 'Layout',
         component: Main,
         children: [

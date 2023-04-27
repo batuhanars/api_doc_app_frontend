@@ -26,6 +26,11 @@ const routes = [
                         name: 'Panel',
                         component: () => import('../views/Panel.vue'),
                     },
+                    {
+                        path: ':module',
+                        name: 'Module',
+                        component: () => import('../views/Module.vue'),
+                    },
                 ],
             },
         ],

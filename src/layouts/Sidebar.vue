@@ -3,7 +3,12 @@
         <div class="sidebar-scroll">
             <nav>
                 <ul class="nav">
-                    <li><a href="index" class=""><i class="lnr lnr-home"></i> <span>Anasayfa</span></a></li>
+                    <li>
+                        <RouterLink :to="{ name: 'Panel', params: { app: 'kurumsal' } }" class=""><i
+                                class="lnr lnr-home"></i>
+                            <span>Anasayfa</span>
+                        </RouterLink>
+                    </li>
                     <li>
                         <a href="#subPages" data-toggle="collapse" class="collapsed"><i class="lnr lnr-enter"></i>
                             <span>Oturum İşlemleri</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>

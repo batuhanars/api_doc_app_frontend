@@ -18,7 +18,7 @@
                         </div>
                     </div>
                     <div class="panel-body">
-                        <table class="table">
+                        <table class="table table-hover">
                             <thead>
                                 <tr>
                                     <th>Proje</th>
@@ -29,15 +29,15 @@
                             <tbody>
                                 <tr>
                                     <td>
-                                        <i class="fas fa-folder text-muted" style="margin-right: 5px;"></i>
-                                        Yolhizmeti
+                                        <RouterLink :to="{ name: 'Apps', params: { project: 'yolhizmeti' } }"
+                                            style="display: block;">
+                                            <i class="fas fa-folder text-muted" style="margin-right: 5px;"></i>
+                                            Yolhizmeti
+                                        </RouterLink>
                                     </td>
                                     <td>2023-04-26</td>
                                     <td style="text-align:end;">
                                         <div style="">
-                                            <a href="" class="btn btn-sm btn-info" style="margin-right: 10px;">
-                                                Panele Bağlan
-                                            </a>
                                             <a href="" class="btn btn-sm btn-danger">
                                                 Sil
                                             </a>

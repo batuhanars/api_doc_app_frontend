@@ -11,7 +11,7 @@
                             <h3 class="panel-title">
                                 <input type="text" placeholder="Ara..." class="form-control">
                             </h3>
-                            <a href="#" class="btn btn-primary">
+                            <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#createApp">
                                 <i class="fas fa-plus"></i>
                                 Alt Proje Ekle
                             </a>
@@ -38,9 +38,6 @@
                                     <td>2023-04-26</td>
                                     <td style="text-align:end;">
                                         <div style="">
-                                            <a href="" class="btn btn-sm btn-info" style="margin-right: 10px;">
-                                                Panele Bağlan
-                                            </a>
                                             <a href="" class="btn btn-sm btn-danger">
                                                 Sil
                                             </a>
@@ -66,9 +63,23 @@
                 </div>
             </footer>
         </div>
+        <Modal id="createApp" title="Alt Proje Oluştur" aria-labelledby="createAppLabel" label-id="createAppLabel">
+            <form>
+                <div class="modal-body">
+                    <Input type="text" label="Başlık" for-label="title" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+                    <button type="submit" class="btn btn-primary">Kaydet</button>
+                </div>
+            </form>
+        </Modal>
     </div>
     <!-- END WRAPPER -->
 </template>
 
 <script setup>
+import Input from '../components/Input.vue';
+import Modal from '../components/Modal.vue';
+
 </script>

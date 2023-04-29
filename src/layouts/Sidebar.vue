@@ -123,10 +123,7 @@
                 >
                   <input type="text" value="Yeni Alt Modül" class="add-submodule-input" />
                 </li>
-                <li
-                  style="padding: 10px 0 10px 60px; display: flex"
-                  v-if="$route.params.module"
-                >
+                <li style="padding: 10px 0 10px 60px; display: flex">
                   <button
                     type="button"
                     class="btn btn-sm btn-warning rounded"
@@ -142,7 +139,7 @@
           <li style="padding: 18px 30px 0 30px; display: flex" v-show="showModuleInput">
             <input type="text" class="add-module-input" value="Yeni Modül" />
           </li>
-          <li style="padding: 18px 30px; display: flex" v-if="!$route.params.module">
+          <li style="padding: 18px 30px; display: flex">
             <button
               type="button"
               class="btn btn-sm btn-warning rounded"

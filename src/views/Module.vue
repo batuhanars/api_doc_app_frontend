@@ -19,12 +19,20 @@
             style="font-size: 16px; margin-left: 15px"
           ></i>
         </a>
-        <a href="#" @click="editTitle = true" v-else>
-          <i
-            class="fas fa-times text-danger"
-            style="font-size: 16px; margin-left: 15px"
-          ></i>
-        </a>
+        <div style="display: flex" v-else>
+          <a href="#">
+            <i
+              class="fas fa-check text-success"
+              style="font-size: 16px; margin-left: 15px"
+            ></i>
+          </a>
+          <a href="#" @click="editTitle = true">
+            <i
+              class="fas fa-times text-danger"
+              style="font-size: 16px; margin-left: 15px"
+            ></i>
+          </a>
+        </div>
       </div>
     </div>
     <h4 class="page-title" style="display: flex; align-items: center">
@@ -59,14 +67,20 @@
       >
         <i class="fas fa-pen"></i>
       </a>
-      <a
-        href="#"
-        style="font-size: 16px; margin-left: 15px"
-        v-else
-        @click="editEndpoint = true"
-      >
-        <i class="fas fa-times text-danger"></i>
-      </a>
+      <div style="display: flex" v-else>
+        <a href="#">
+          <i
+            class="fas fa-check text-success"
+            style="font-size: 16px; margin-left: 15px"
+          ></i>
+        </a>
+        <a href="#" @click="editEndpoint = true">
+          <i
+            class="fas fa-times text-danger"
+            style="font-size: 16px; margin-left: 15px"
+          ></i>
+        </a>
+      </div>
     </h4>
     <div class="row">
       <div class="col-md-5">
@@ -125,21 +139,13 @@
         <!-- TABLE HOVER -->
         <div class="panel">
           <div class="panel-heading">
-            <h3 class="panel-title">HTTP Durum Kodları</h3>
+            <h3 class="panel-title">Response</h3>
           </div>
           <div class="panel-body">
-            <pre>
-200 - Tamam Her şey beklendiği gibi çalıştı.
-400 - Hatalı istek. Çoğunlukla gerekli olan bir parametrenin eksik olması nedeniyle kabul edilmez.
-401 - Geçersiz/Yetkisiz API Token kodu.
-402 - Parametreler geçerli fakat istek başarısız oldu.
-403 - Yasaklanış yada pasife alınmış token kodu. İsteği gerçekleştirme izni yok.
-404 - Bulunamadı! İstenen kaynak mevcut değil.
-405 - Geçersiz method. Kaynak bir GET veya POST yöntemi bekliyor olabilir, ancak bir DELETE veya PUT yöntemi alırsa, yapılan istek 405 olarak reddedilecektir.
-409 - Web sunucusu üzerinde önceden belitrilmiş bir kural veya versiyon farklılıklarından dolayı oluşan uyumsuzluğun neden olduğu hata mesajıdır.
-429 - API Token kodu ile çok fazla istek yapıldı.
-500, 502, 503, 504 - Sunucu Hataları! Yazılım tarafında bir şeyler ters gitti.</pre
-            >
+            <codemirror v-model="responseContent" :extensions="extensions" />
+          </div>
+          <div class="panel-footer" style="display: flex; justify-content: end">
+            <button type="button" class="btn btn-pirmary">Kaydet</button>
           </div>
         </div>
         <!-- END TABLE HOVER -->
@@ -194,7 +200,16 @@
 import { ref } from "vue";
 import Modal from "../components/Modal.vue";
 import Input from "../components/Input.vue";
+import { Codemirror } from "vue-codemirror";
+import { json } from "@codemirror/lang-json";
 
 const editEndpoint = ref(true);
 const editTitle = ref(true);
+
+const extensions = [json()];
+const responseContent = ref(`{
+    "status": "success",
+    "message": "Giriş yapmak için kullanacağınız kod sms olarak gönderildi.",
+    "data": []
+}`);
 </script>

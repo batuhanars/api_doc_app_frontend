@@ -32,23 +32,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>
-                    <RouterLink
-                      :to="{ name: 'Panel', params: { app: 'kurumsal' } }"
-                      style="display: block"
-                    >
-                      <i class="fas fa-folder text-muted" style="margin-right: 5px"></i>
-                      Kurumsal
-                    </RouterLink>
-                  </td>
-                  <td>2023-04-26</td>
-                  <td style="text-align: end">
-                    <div style="">
-                      <a href="" class="btn btn-sm btn-danger"> Sil </a>
-                    </div>
-                  </td>
-                </tr>
+                <SubProject />
               </tbody>
             </table>
           </div>
@@ -88,6 +72,24 @@
         </div>
       </form>
     </Modal>
+    <Modal
+      id="editApp"
+      title="Alt Proje Güncelle"
+      aria-labelledby="editAppLabel"
+      label-id="editAppLabel"
+    >
+      <form>
+        <div class="modal-body">
+          <Input type="text" label="Başlık" for-label="title" />
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Kapat
+          </button>
+          <button type="submit" class="btn btn-primary">Güncelle</button>
+        </div>
+      </form>
+    </Modal>
   </div>
   <!-- END WRAPPER -->
 </template>
@@ -95,4 +97,5 @@
 <script setup>
 import Input from "../components/Input.vue";
 import Modal from "../components/Modal.vue";
+import SubProject from "../components/SubProject.vue";
 </script>

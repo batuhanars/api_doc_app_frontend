@@ -1,10 +1,10 @@
 <template>
     <div class="container-fluid">
         <h3 class="page-title">Hata Durumları</h3>
-        <h4 class="page-title">Sistemde meydana gelebilecek <code>hata durumları</code> ve geriye dönecek olan
-            hata
-            mesaj
-            durumlarını bu alandan görebilirsiniz.</h4>
+        <h4 class="page-title">
+            Sistemde meydana gelebilecek <code>hata durumları</code> ve geriye dönecek olan hata
+            mesaj durumlarını bu alandan görebilirsiniz.
+        </h4>
         <div class="row">
             <div class="col-md-5">
                 <div class="panel">
@@ -39,7 +39,8 @@
                         <h3 class="panel-title">HTTP Durum Kodları</h3>
                     </div>
                     <div class="panel-body">
-                        <pre>200 - Tamam Her şey beklendiği gibi çalıştı.
+                        <pre>
+200 - Tamam Her şey beklendiği gibi çalıştı.
 400 - Hatalı istek. Çoğunlukla gerekli olan bir parametrenin eksik olması nedeniyle kabul edilmez.
 401 - Geçersiz/Yetkisiz API Token kodu.
 402 - Parametreler geçerli fakat istek başarısız oldu.
@@ -58,5 +59,17 @@
 </template>
 
 <script setup>
+import { useTitle } from "@vueuse/core";
+import { onMounted } from "vue";
+import { useRoute } from "vue-router";
+import { useSubProjectStore } from "../store/subProject";
 
+const subProjectStore = useSubProjectStore();
+const route = useRoute();
+
+onMounted(() => {
+    subProjectStore.getSubProject(route.params.app).then((data) => {
+        useTitle(data.title);
+    });
+});
 </script>

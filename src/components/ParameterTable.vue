@@ -20,7 +20,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <Parameter v-for="parameter in parameterStore.parameters" :key="parameter.id" :parameter="parameter"
+                        <Parameter v-for="parameter in parameters" :key="parameter.id" :parameter="parameter"
                             @emit-parameter="editParameter" @delete-parameter="deleteParameter" />
                     </tbody>
                 </table>
@@ -31,7 +31,8 @@
             label-id="createParameterLabel">
             <form @submit.prevent="addParameter">
                 <div class="modal-body">
-                    <Input type="text" label="Başlık" for-label="title" v-model:modelValue="parameter.title" />
+                    <Input type="text" label="Başlık" for-label="title" v-model:modelValue="parameter.title"
+                        :error="errors.title" />
                     <div class="form-group">
                         <label for="status" class="form-label">Durum</label>
                         <select v-model="parameter.type" class="form-control">
@@ -46,8 +47,8 @@
                             <option value="opsiyonel">opsiyonel</option>
                         </select>
                     </div>
-                    <Input type="text" label="Açıklama" for-label="description"
-                        v-model:modelValue="parameter.description" />
+                    <Input type="text" label="Açıklama" for-label="description" v-model:modelValue="parameter.description"
+                        :error="errors.description" />
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">
@@ -61,7 +62,8 @@
             label-id="editParameterLabel">
             <form @submit.prevent="updateParameter">
                 <div class="modal-body">
-                    <Input type="text" label="Başlık" for-label="title" v-model:modelValue="parameter.title" />
+                    <Input type="text" label="Başlık" for-label="title" v-model:modelValue="parameter.title"
+                        :error="errors.title" />
                     <div class="form-group">
                         <label for="status" class="form-label">Durum</label>
                         <select v-model="parameter.type" class="form-control">
@@ -76,8 +78,8 @@
                             <option value="opsiyonel">opsiyonel</option>
                         </select>
                     </div>
-                    <Input type="text" label="Açıklama" for-label="description"
-                        v-model:modelValue="parameter.description" />
+                    <Input type="text" label="Açıklama" for-label="description" v-model:modelValue="parameter.description"
+                        :error="errors.description" />
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">
@@ -99,10 +101,13 @@ import Parameter from "./Parameter.vue";
 import Input from "./Input.vue";
 import { useToast } from "vue-toast-notification";
 import Swal from "sweetalert2";
+import { storeToRefs } from "pinia";
 
 const parameterStore = useParameterStore();
 const route = useRoute();
 const toast = useToast();
+
+const { parameters, errors } = storeToRefs(parameterStore);
 
 const parameter = reactive({
     id: "",

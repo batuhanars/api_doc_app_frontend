@@ -5,6 +5,10 @@ export const useParameterStore = defineStore('parameter', {
     state: () => {
         return {
             parameters: {},
+            errors: {
+                title: '',
+                description: '',
+            },
         }
     },
     actions: {
@@ -25,6 +29,11 @@ export const useParameterStore = defineStore('parameter', {
                     this.getParameters(module)
                     return res.data
                 })
+                .catch((err) => {
+                    this.errors.title = err.response.data.errors.title[0]
+                    this.errors.description =
+                        err.response.data.errors.description[0]
+                })
         },
         async updateParameter(
             { id, title, type, status, description },
@@ -36,10 +45,17 @@ export const useParameterStore = defineStore('parameter', {
             fd.append('status', status)
             fd.append('description', description)
             fd.append('_method', 'PUT')
-            return await apiClient.post(`/parameters/${id}`, fd).then((res) => {
-                this.getParameters(module)
-                return res.data
-            })
+            return await apiClient
+                .post(`/parameters/${id}`, fd)
+                .then((res) => {
+                    this.getParameters(module)
+                    return res.data
+                })
+                .catch((err) => {
+                    this.errors.title = err.response.data.errors.title[0]
+                    this.errors.description =
+                        err.response.data.errors.description[0]
+                })
         },
         async deleteParameter(id, module) {
             return await apiClient.delete(`/parameters/${id}`).then((res) => {

@@ -11,13 +11,7 @@
               <h3 class="panel-title">
                 <input type="text" placeholder="Ara..." class="form-control" />
               </h3>
-              <a
-                href="#"
-                class="btn btn-primary"
-                data-toggle="modal"
-                data-target="#createProject"
-                @click="createProject"
-              >
+              <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#createProject" @click="createProject">
                 <i class="fas fa-plus"></i>
                 Proje Ekle
               </a>
@@ -33,13 +27,8 @@
                 </tr>
               </thead>
               <tbody>
-                <Project
-                  v-for="project in projects"
-                  :key="project.id"
-                  :project="project"
-                  @emit-project="editProject"
-                  @delete-project="deleteProject"
-                />
+                <Project v-for="project in projects" :key="project.id" :project="project" @emit-project="editProject"
+                  @delete-project="deleteProject" />
               </tbody>
             </table>
           </div>
@@ -54,36 +43,19 @@
         <div class="container-fluid">
           <p class="copyright">
             &copy; 2022
-            <a href="https://www.markapress.com" target="_blank"
-              >Marka Press Digital Software Agency</a
-            >. All Rights Reserved.
+            <a href="https://www.markapress.com" target="_blank">Marka Press Digital Software Agency</a>. All Rights
+            Reserved.
           </p>
         </div>
       </footer>
     </div>
-    <Modal
-      id="createProject"
-      title="Proje Oluştur"
-      aria-labelledby="createProjectLabel"
-      label-id="createProjectLabel"
-    >
+    <Modal id="createProject" title="Proje Oluştur" aria-labelledby="createProjectLabel" label-id="createProjectLabel">
       <form @submit.prevent="addProject">
         <div class="modal-body">
-          <Input
-            type="file"
-            label="Logo"
-            for-label="logo"
-            :modelValue="project.logo"
-            @update:modelValue="uploadLogo"
-            :error="projectStore.errors.logo"
-          />
-          <Input
-            type="text"
-            label="Başlık"
-            for-label="title"
-            v-model:modelValue="project.title"
-            :error="projectStore.errors.title"
-          />
+          <Input type="file" label="Logo" for-label="logo" :modelValue="project.logo" @update:modelValue="uploadLogo"
+            :error="storeValidation.logo" />
+          <Input type="text" label="Başlık" for-label="title" v-model:modelValue="project.title"
+            :error="storeValidation.title" />
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">
@@ -93,34 +65,14 @@
         </div>
       </form>
     </Modal>
-    <Modal
-      id="editProject"
-      title="Proje Güncelle"
-      aria-labelledby="editProjectLabel"
-      label-id="editProjectLabel"
-    >
+    <Modal id="editProject" title="Proje Güncelle" aria-labelledby="editProjectLabel" label-id="editProjectLabel">
       <form @submit.prevent="updateProject">
         <div class="modal-body">
-          <img
-            :src="previewLogo || project.logo"
-            alt=""
-            style="width: 250px; margin-bottom: 10px"
-          />
-          <Input
-            type="file"
-            label="Logo"
-            for-label="logo"
-            :modelValue="project.logo"
-            @update:modelValue="uploadLogo"
-            :error="projectStore.errors.logo"
-          />
-          <Input
-            type="text"
-            label="Başlık"
-            for-label="title"
-            v-model:modelValue="project.title"
-            :error="projectStore.errors.title"
-          />
+          <img :src="previewLogo || project.logo" alt="" style="width: 250px; margin-bottom: 10px" />
+          <Input type="file" label="Logo" for-label="logo" :modelValue="project.logo" @update:modelValue="uploadLogo"
+            :error="updateValidation.logo" />
+          <Input type="text" label="Başlık" for-label="title" v-model:modelValue="project.title"
+            :error="updateValidation.title" />
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">
@@ -149,12 +101,12 @@ useTitle("Projeler");
 
 const projectStore = useProjectStore();
 const toast = useToast();
-const { projects } = storeToRefs(projectStore);
+const { projects, storeValidation, updateValidation } = storeToRefs(projectStore);
 
 const project = reactive({
-  slug: null,
-  logo: null,
-  title: null,
+  slug: "",
+  logo: "",
+  title: "",
 });
 const previewLogo = ref();
 

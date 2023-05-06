@@ -32,7 +32,7 @@
             <form @submit.prevent="addParameter">
                 <div class="modal-body">
                     <Input type="text" label="Başlık" for-label="title" v-model:modelValue="parameter.title"
-                        :error="errors.title" />
+                        :error="storeValidation.title" />
                     <div class="form-group">
                         <label for="status" class="form-label">Durum</label>
                         <select v-model="parameter.type" class="form-control">
@@ -48,7 +48,7 @@
                         </select>
                     </div>
                     <Input type="text" label="Açıklama" for-label="description" v-model:modelValue="parameter.description"
-                        :error="errors.description" />
+                        :error="storeValidation.description" />
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">
@@ -63,7 +63,7 @@
             <form @submit.prevent="updateParameter">
                 <div class="modal-body">
                     <Input type="text" label="Başlık" for-label="title" v-model:modelValue="parameter.title"
-                        :error="errors.title" />
+                        :error="updateValidation.title" />
                     <div class="form-group">
                         <label for="status" class="form-label">Durum</label>
                         <select v-model="parameter.type" class="form-control">
@@ -79,7 +79,7 @@
                         </select>
                     </div>
                     <Input type="text" label="Açıklama" for-label="description" v-model:modelValue="parameter.description"
-                        :error="errors.description" />
+                        :error="updateValidation.description" />
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">
@@ -107,7 +107,7 @@ const parameterStore = useParameterStore();
 const route = useRoute();
 const toast = useToast();
 
-const { parameters, errors } = storeToRefs(parameterStore);
+const { parameters, storeValidation, updateValidation } = storeToRefs(parameterStore);
 
 const parameter = reactive({
     id: "",

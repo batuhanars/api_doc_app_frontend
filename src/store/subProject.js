@@ -6,7 +6,8 @@ export const useSubProjectStore = defineStore('sub-project', {
         return {
             subProjects: {},
             subProject: {},
-            error: '',
+            storeValidation: '',
+            updateValidation: '',
         }
     },
     actions: {
@@ -32,7 +33,7 @@ export const useSubProjectStore = defineStore('sub-project', {
                     return res.data
                 })
                 .catch((err) => {
-                    this.error = err.response.data.errors.title[0]
+                    this.storeValidation = err.response.data.errors.title[0]
                 })
         },
         async updateSubProject(title, subProject, project) {
@@ -47,7 +48,7 @@ export const useSubProjectStore = defineStore('sub-project', {
                     return res.data
                 })
                 .catch((err) => {
-                    this.error = err.response.data.errors.title[0]
+                    this.updateValidation = err.response.data.errors.title[0]
                 })
         },
         async deleteSubProject(project, subProject) {

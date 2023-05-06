@@ -6,7 +6,11 @@ export const useProjectStore = defineStore('project', {
         return {
             projects: {},
             project: {},
-            errors: {
+            storeValidation: {
+                logo: '',
+                title: '',
+            },
+            updateValidation: {
                 logo: '',
                 title: '',
             },
@@ -44,8 +48,9 @@ export const useProjectStore = defineStore('project', {
                     return res.data
                 })
                 .catch((err) => {
-                    this.errors.logo = err.response.data.errors.logo[0]
-                    this.errors.title = err.response.data.errors.title[0]
+                    this.storeValidation.logo = err.response.data.errors.logo[0]
+                    this.storeValidation.title =
+                        err.response.data.errors.title[0]
                 })
         },
         async updateProject({ logo, title, slug }) {
@@ -61,8 +66,10 @@ export const useProjectStore = defineStore('project', {
                     return res.data
                 })
                 .catch((err) => {
-                    this.errors.logo = err.response.data.errors.logo[0]
-                    this.errors.title = err.response.data.errors.title[0]
+                    this.updateValidation.title =
+                        err.response.data.errors.title[0]
+                    this.updateValidation.logo =
+                        err.response.data.errors.logo[0] || ''
                 })
         },
         async deleteProject(slug) {

@@ -5,7 +5,11 @@ export const useParameterStore = defineStore('parameter', {
     state: () => {
         return {
             parameters: {},
-            errors: {
+            storeValidation: {
+                title: '',
+                description: '',
+            },
+            updateValidation: {
                 title: '',
                 description: '',
             },
@@ -30,8 +34,9 @@ export const useParameterStore = defineStore('parameter', {
                     return res.data
                 })
                 .catch((err) => {
-                    this.errors.title = err.response.data.errors.title[0]
-                    this.errors.description =
+                    this.storeValidation.title =
+                        err.response.data.errors.title[0]
+                    this.storeValidation.description =
                         err.response.data.errors.description[0]
                 })
         },
@@ -52,8 +57,9 @@ export const useParameterStore = defineStore('parameter', {
                     return res.data
                 })
                 .catch((err) => {
-                    this.errors.title = err.response.data.errors.title[0]
-                    this.errors.description =
+                    this.updateValidation.title =
+                        err.response.data.errors.title[0]
+                    this.updateValidation.description =
                         err.response.data.errors.description[0]
                 })
         },

@@ -17,13 +17,7 @@
               <h3 class="panel-title">
                 <input type="text" placeholder="Ara..." class="form-control" />
               </h3>
-              <a
-                href="#"
-                class="btn btn-primary"
-                data-toggle="modal"
-                data-target="#createApp"
-                @click="createSubProject"
-              >
+              <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#createApp" @click="createSubProject">
                 <i class="fas fa-plus"></i>
                 Alt Proje Ekle
               </a>
@@ -39,13 +33,8 @@
                 </tr>
               </thead>
               <tbody>
-                <SubProject
-                  v-for="subProject in subProjects"
-                  :key="subProject.id"
-                  :sub-project="subProject"
-                  @emit-subproject="editSubProject"
-                  @delete-subproject="deleteSubProject"
-                />
+                <SubProject v-for="subProject in subProjects" :key="subProject.id" :sub-project="subProject"
+                  @emit-subproject="editSubProject" @delete-subproject="deleteSubProject" />
               </tbody>
             </table>
           </div>
@@ -60,28 +49,17 @@
         <div class="container-fluid">
           <p class="copyright">
             &copy; 2022
-            <a href="https://www.markapress.com" target="_blank"
-              >Marka Press Digital Software Agency</a
-            >. All Rights Reserved.
+            <a href="https://www.markapress.com" target="_blank">Marka Press Digital Software Agency</a>. All Rights
+            Reserved.
           </p>
         </div>
       </footer>
     </div>
-    <Modal
-      id="createApp"
-      title="Alt Proje Oluştur"
-      aria-labelledby="createAppLabel"
-      label-id="createAppLabel"
-    >
+    <Modal id="createApp" title="Alt Proje Oluştur" aria-labelledby="createAppLabel" label-id="createAppLabel">
       <form @submit.prevent="addSubProject">
         <div class="modal-body">
-          <Input
-            type="text"
-            label="Başlık"
-            for-label="title"
-            v-model:modelValue="subProject.title"
-            :error="subProjectStore.error"
-          />
+          <Input type="text" label="Başlık" for-label="title" v-model:modelValue="subProject.title"
+            :error="storeValidation" />
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">
@@ -91,21 +69,11 @@
         </div>
       </form>
     </Modal>
-    <Modal
-      id="editApp"
-      title="Alt Proje Güncelle"
-      aria-labelledby="editAppLabel"
-      label-id="editAppLabel"
-    >
+    <Modal id="editApp" title="Alt Proje Güncelle" aria-labelledby="editAppLabel" label-id="editAppLabel">
       <form @submit.prevent="updateSubProject">
         <div class="modal-body">
-          <Input
-            type="text"
-            label="Başlık"
-            for-label="title"
-            v-model:modelValue="subProject.title"
-            :error="subProjectStore.error"
-          />
+          <Input type="text" label="Başlık" for-label="title" v-model:modelValue="subProject.title"
+            :error="updateValidation" />
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">
@@ -136,11 +104,11 @@ const projectStore = useProjectStore();
 const subProjectStore = useSubProjectStore();
 const route = useRoute();
 const toast = useToast();
-const { subProjects } = storeToRefs(subProjectStore);
+const { subProjects, storeValidation, updateValidation } = storeToRefs(subProjectStore);
 
 const subProject = reactive({
-  title: null,
-  slug: null,
+  title: "",
+  slug: "",
 });
 
 const createSubProject = () => {

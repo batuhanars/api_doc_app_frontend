@@ -16,9 +16,13 @@
     "axios": "^1.4.0",
     "codemirror": "^6.0.1",
     "pinia": "^2.0.35",
+    "sweetalert2": "^11.7.3",
     "vue": "^3.2.47",
     "vue-codemirror": "^6.1.1",
-    "vue-router": "4"
+    "vue-router": "4",
+    "vue-sweetalert2": "^5.0.5",
+    "vue-toast-notification": "^3.0",
+    "vuedraggable": "^4.1.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.1.0",

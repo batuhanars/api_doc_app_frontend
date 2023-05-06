@@ -1,198 +1,224 @@
 <template>
-  <div id="sidebar-nav" class="sidebar">
-    <div class="sidebar-scroll">
-      <nav>
-        <ul class="nav">
-          <li>
-            <RouterLink :to="{ name: 'Panel', params: { app: 'kurumsal' } }"
-              ><i class="lnr lnr-home"></i>
-              <span>Anasayfa</span>
-            </RouterLink>
-          </li>
-          <li>
-            <a
-              href="#subPages"
-              data-toggle="collapse"
-              class="collapsed dropdown-module"
-              style="display: flex; align-items: center"
-            >
-              <div
-                class="module-actions-left"
-                v-if="$route.params.module"
-                v-show="editModule"
-              >
-                <a href="#" class="edit-module-button" @click="toggleEditModule">
-                  <i class="fas fa-pen" style="font-size: 12px"></i>
-                </a>
-              </div>
-              <div style="width: 100%" v-if="editModule">
-                <i class="lnr lnr-enter"></i>
-                <span>Oturum İşlemleri</span>
-                <i class="icon-submenu lnr lnr-chevron-left"></i>
-              </div>
-              <div style="display: flex" v-else>
+  <div>
+    <div id="sidebar-nav" class="sidebar">
+      <div class="sidebar-scroll">
+        <nav>
+          <Draggable v-model="modules" group="modules" tag="ul" class="nav" item-key="id" @change="changeModule">
+            <template #header>
+              <li>
+                <RouterLink :to="{ name: 'Panel', params: { app: $route.params.app } }" exact-active-class="active"><i
+                    class="lnr lnr-home"></i> <span>Anasayfa</span>
+                </RouterLink>
+              </li>
+            </template>
+            <template #item="{ element }">
+              <ParentModule :module="element" :previewEditIcon="editIcon" @emit-module="updateModule"
+                @delete-module="deleteModule" @editable-icon="editableIcon" />
+            </template>
+            <template #footer>
+              <li style="
+                  padding: 18px 30px 0 30px;
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+                " v-show="showModuleInput">
+                <i class="fas fa-plus" style="color: #fff; cursor: pointer"
+                  :class="{ 'error-icon': validationModule == true }" data-toggle="modal" data-target="#addIcon"
+                  v-if="module.icon == ''"></i>
+                <i v-else style="color: white" :class="module.icon"></i>
+                <input type="text" class="add-module-input" :class="{ 'error-input': validationModule == true }"
+                  v-model="module.title" />
                 <div style="display: flex">
-                  <i class="lnr lnr-enter"></i>
-                  <input type="text" class="edit-module-input" value="Oturum İşlemleri" />
+                  <i class="fas fa-check text-success" style="cursor: pointer; font-size: 12px" @click="addModule"></i>
+                  <i class="fas fa-times text-danger" style="cursor: pointer; font-size: 12px"
+                    @click="closeModuleInput"></i>
                 </div>
-                <div
-                  style="
-                    background: #191919;
-                    padding: 0 5px;
-                    display: flex;
-                    margin-left: 5px;
-                  "
-                  v-if="$route.params.module"
-                >
-                  <a href="" class="edit-module-button">
-                    <i class="fas fa-check" style="font-size: 12px"></i>
-                  </a>
-                  <a href="#" class="delete-module-button" @click="toggleEditModule">
-                    <i class="fas fa-times text-danger" style="font-size: 12px"></i>
-                  </a>
-                </div>
-              </div>
-              <div class="module-actions" v-if="$route.params.module" v-show="editModule">
-                <a href="" class="delete-module-button">
-                  <i class="fas fa-trash text-danger" style="font-size: 12px"></i>
-                </a>
-              </div>
-            </a>
-
-            <div id="subPages" class="collapse">
-              <ul class="nav">
-                <li style="display: flex; align-items: center">
-                  <a href="send-code" class="" v-if="editSubModule"
-                    >Giriş Kodu &nbsp;
-                    <span class="label label-primary">POST</span>
-                  </a>
-                  <div
-                    style="
-                      display: flex;
-                      padding-left: 60px;
-                      padding-top: 10px;
-                      padding-bottom: 10px;
-                    "
-                    v-else
-                  >
-                    <div style="display: flex">
-                      <input
-                        type="text"
-                        class="edit-submodule-input"
-                        value="Giriş Kodu"
-                      />
-                    </div>
-                    <div
-                      style="padding: 0 5px; display: flex; margin-left: 5px"
-                      v-if="$route.params.module"
-                    >
-                      <a href="" class="edit-module-button">
-                        <i class="fas fa-check" style="font-size: 12px"></i>
-                      </a>
-                      <a
-                        href="#"
-                        class="delete-module-button"
-                        @click="toggleEditSubModule"
-                      >
-                        <i class="fas fa-times text-danger" style="font-size: 12px"></i>
-                      </a>
-                    </div>
-                  </div>
-                  <div
-                    style="position: absolute; right: 0"
-                    v-if="$route.params.module"
-                    v-show="editSubModule"
-                  >
-                    <a href="#" @click="toggleEditSubModule">
-                      <i class="fas fa-pen" style="font-size: 12px"></i>
-                    </a>
-                    <a href="">
-                      <i class="fas fa-trash text-danger" style="font-size: 12px"></i>
-                    </a>
-                  </div>
-                </li>
-                <li>
-                  <a href="user-info" class=""
-                    >Üye Bilgileri &nbsp;
-                    <span class="label label-success">GET</span>
-                  </a>
-                </li>
-                <li
-                  style="padding: 10px 0 10px 60px; display: flex"
-                  v-show="showSubModuleInput"
-                >
-                  <input type="text" value="Yeni Alt Modül" class="add-submodule-input" />
-                </li>
-                <li style="padding: 10px 0 10px 60px; display: flex">
-                  <button
-                    type="button"
-                    class="btn btn-sm btn-warning rounded"
-                    @click="toggleSubModuleInput"
-                  >
-                    <i class="fas fa-plus"></i>
-                    Alt Modül Ekle
-                  </button>
-                </li>
-              </ul>
-            </div>
-          </li>
-          <li style="padding: 18px 30px 0 30px; display: flex" v-show="showModuleInput">
-            <input type="text" class="add-module-input" value="Yeni Modül" />
-          </li>
-          <li style="padding: 18px 30px; display: flex">
-            <button
-              type="button"
-              class="btn btn-sm btn-warning rounded"
-              @click="toggleModuleInput"
-              style="flex-grow: 1"
-            >
-              <i class="fas fa-plus"></i>
-              Modül Ekle
-            </button>
-          </li>
-        </ul>
-      </nav>
+              </li>
+              <li style="padding: 18px 30px; display: flex">
+                <button type="button" class="btn btn-sm rounded" @click="openModuleInput" style="flex-grow: 1">
+                  <i class="fas fa-plus"></i>
+                  Modül Ekle
+                </button>
+              </li>
+            </template>
+          </Draggable>
+        </nav>
+      </div>
     </div>
+    <Modal id="addIcon" title="İkon Ekle" aria-labelledby="addIconLabel" label-id="addIconLabel">
+      <div class="modal-body">
+        <Input type="text" label="İkon" for-label="icon" v-model:modelValue="previewIcon" />
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Kapat
+        </button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" @click="addIcon">
+          Onayla
+        </button>
+      </div>
+    </Modal>
+    <Modal id="editIcon" title="İkon Güncelle" aria-labelledby="editIconLabel" label-id="editIconLabel">
+      <div class="modal-body">
+        <Input type="text" label="İkon" for-label="icon" v-model:modelValue="previewEditIcon" />
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Kapat
+        </button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" @click="applyEditIcon">
+          Onayla
+        </button>
+      </div>
+    </Modal>
   </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { onMounted, reactive, ref } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { useModuleStore } from "../store/module";
+import ParentModule from "../components/ParentModule.vue";
+import Modal from "../components/Modal.vue";
+import Input from "../components/Input.vue";
+import { useToast } from "vue-toast-notification";
+import Swal from "sweetalert2";
+import Draggable from "vuedraggable";
+import { storeToRefs } from "pinia";
+
+const route = useRoute();
+const router = useRouter();
+const storeModule = useModuleStore();
+const toast = useToast();
+
+const { modules } = storeToRefs(storeModule);
+
+const module = reactive({
+  parent_id: 0,
+  icon: "",
+  title: "Yeni Modül",
+});
+
+const validationModule = ref(false);
+
+const previewIcon = ref("");
+const previewEditIcon = ref("");
+const editIcon = ref("");
+
+const changeModule = (e) => {
+  let item = e.moved;
+
+  let index = item.newIndex;
+  let prevModule = modules.value[index - 1];
+  let nextModule = modules.value[index + 1];
+  let module = modules.value[index];
+
+  let order = module.order;
+
+  if (prevModule && nextModule) {
+    order = (prevModule.order + nextModule.order) / 2;
+  } else if (prevModule) {
+    order = prevModule.order + prevModule.order / 2;
+  } else if (nextModule) {
+    order = nextModule.order / 2;
+  }
+
+  storeModule.moveModule(order, module.slug, route.params.app);
+};
+
+const addIcon = () => {
+  module.icon = previewIcon.value;
+};
+
+const applyEditIcon = () => {
+  editIcon.value = previewEditIcon.value;
+};
+
+const addModule = () => {
+  if (module.title != "" && module.icon != "") {
+    storeModule.storeModule(module, route.params.app).then((data) => {
+      showModuleInput.value = false;
+      module.icon = "";
+      module.title = "Yeni Modül";
+      toast.success(data.success);
+    });
+  } else {
+    validationModule.value = true;
+  }
+};
+
+const editableIcon = (icon) => {
+  previewEditIcon.value = icon;
+};
+
+const updateModule = (module) => {
+  storeModule
+    .updateModule(
+      { title: module.title, icon: editIcon.value || module.icon },
+      module.slug,
+      route.params.app
+    )
+    .then((data) => {
+      if (route.params.subModule)
+        router.push({ name: "Panel", params: { app: route.params.app } });
+      else router.push({ name: "Module", params: { module: data.module.slug } });
+      toast.success(data.success);
+      previewEditIcon.value = "";
+      editIcon.value = "";
+    });
+};
+
+const deleteModule = (module) => {
+  Swal.fire({
+    title: "Emin misin?",
+    text: "Bu modülü silmek istiyor musunuz?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    cancelButtonText: "İptal",
+    confirmButtonText: "Evet! Sil",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      storeModule.deleteModule(module.slug, route.params.app).then((data) => {
+        router.push({ name: "Panel", params: { app: route.params.app } });
+        toast.success(data.success);
+      });
+    }
+  });
+};
+
+console.log(modules.value[0]);
+onMounted(() => {
+  storeModule.getModules(route.params.app);
+});
 
 const showModuleInput = ref(false);
-const showSubModuleInput = ref(false);
+const editableModule = ref(true);
 
-const editModule = ref(true);
-const editSubModule = ref(true);
-
-const toggleModuleInput = () => {
-  showModuleInput.value = !showModuleInput.value;
-  showSubModuleInput.value = false;
-  editModule.value = true;
-  editSubModule.value = true;
+const openModuleInput = () => {
+  showModuleInput.value = true;
+  editableModule.value = true;
 };
 
-const toggleSubModuleInput = () => {
-  showSubModuleInput.value = !showSubModuleInput.value;
+const closeModuleInput = () => {
+  module.title = "Yeni Modül";
+  module.icon = "";
+  previewIcon.value = "";
   showModuleInput.value = false;
-  editModule.value = true;
-  editSubModule.value = true;
-};
-
-const toggleEditModule = () => {
-  editModule.value = !editModule.value;
-  editSubModule.value = true;
-  showModuleInput.value = false;
-  showSubModuleInput.value = false;
-};
-
-const toggleEditSubModule = () => {
-  editSubModule.value = !editSubModule.value;
-  editModule.value = true;
-  showSubModuleInput.value = false;
+  previewEditIcon.value = "";
+  editIcon.value = "";
 };
 </script>
 <style>
+.error-input {
+  border: 1px solid red !important;
+}
+
+.error-icon {
+  color: red !important;
+}
+
 .edit-module-button:hover i {
   color: #337ab7 !important;
 }
@@ -225,13 +251,27 @@ const toggleEditSubModule = () => {
   opacity: 1;
 }
 
-.add-module-input,
+.module:hover .module-actions,
+.module:hover .module-actions-left {
+  opacity: 1;
+}
+
 .add-submodule-input,
 .edit-module-input,
 .edit-submodule-input {
   background: transparent;
   border: 1px solid #ccc;
-  width: 140px;
+  width: 135px;
+  color: #fff;
+  outline: none;
+  margin-right: 5px;
+}
+
+.add-module-input {
+  width: 100%;
+  margin-right: 10px;
+  background: transparent;
+  border: 1px solid #ccc;
   color: #fff;
   outline: none;
 }

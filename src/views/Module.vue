@@ -1,215 +1,106 @@
 <template>
   <div class="container-fluid">
-    <div
-      style="
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 30px;
-      "
-    >
-      <div style="display: flex; align-items: center">
-        <h3 class="page-title" style="margin: 0" v-if="editTitle">
-          Üye Giriş Kodu Gönderme
-        </h3>
-        <input type="text" class="form-control" value="Üye Giriş Kodu Gönderme" v-else />
-        <a href="#" @click="editTitle = false" v-if="editTitle">
-          <i
-            class="fas fa-pen text-primary"
-            style="font-size: 16px; margin-left: 15px"
-          ></i>
-        </a>
-        <div style="display: flex" v-else>
-          <a href="#">
-            <i
-              class="fas fa-check text-success"
-              style="font-size: 16px; margin-left: 15px"
-            ></i>
-          </a>
-          <a href="#" @click="editTitle = true">
-            <i
-              class="fas fa-times text-danger"
-              style="font-size: 16px; margin-left: 15px"
-            ></i>
-          </a>
-        </div>
-      </div>
-    </div>
-    <h4 class="page-title" style="display: flex; align-items: center">
-      <div v-if="editEndpoint">
-        <span style="margin-right: 7px" class="label label-default"
-          >https://yolhizmeti.com/api/v1/corporate/send-code</span
-        >
-        <span class="label label-primary">POST</span>
-      </div>
-      <div v-else class="row">
-        <div class="col-md-8" style="padding-right: 0">
-          <input
-            type="text"
-            class="form-control"
-            value="https://yolhizmeti.com/api/v1/corporate/send-code"
-          />
-        </div>
-        <div class="col-md-4">
-          <select class="form-control" value="POST">
-            <option value="">GET</option>
-            <option value="">POST</option>
-            <option value="">PUT</option>
-            <option value="">DELETE</option>
-          </select>
-        </div>
-      </div>
-      <a
-        href="#"
-        style="font-size: 16px; margin-left: 15px"
-        v-if="editEndpoint"
-        @click="editEndpoint = false"
-      >
-        <i class="fas fa-pen"></i>
-      </a>
-      <div style="display: flex" v-else>
-        <a href="#">
-          <i
-            class="fas fa-check text-success"
-            style="font-size: 16px; margin-left: 15px"
-          ></i>
-        </a>
-        <a href="#" @click="editEndpoint = true">
-          <i
-            class="fas fa-times text-danger"
-            style="font-size: 16px; margin-left: 15px"
-          ></i>
-        </a>
-      </div>
-    </h4>
+    <EndpointTitle :endpoint="endpoint" @emit-title="updateEndpointTitle" />
+    <EndpointUrlMethod :endpoint="endpoint" @emit-method-url="updateEndpoint" />
     <div class="row">
-      <div class="col-md-5">
-        <div class="panel">
-          <div class="panel-heading">
-            <div style="display: flex; justify-content: space-between">
-              <h3 class="panel-title">Request</h3>
-              <a
-                href="#"
-                class="btn btn-primary"
-                data-toggle="modal"
-                data-target="#createParameter"
-                ><i class="fas fa-plus"></i> Parametre Ekle</a
-              >
-            </div>
-          </div>
-          <div class="panel-body">
-            <table class="table table-hover">
-              <thead>
-                <tr>
-                  <th>Parametre</th>
-                  <th>Tür</th>
-                  <th>Durum</th>
-                  <th>Açıklama</th>
-                  <th style="text-align: end"></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>phone</td>
-                  <td>string</td>
-                  <td>zorunlu</td>
-                  <td>Hataya ait açıklama mesajı.</td>
-                  <td style="text-align: end">
-                    <a
-                      href=""
-                      class="btn btn-sm btn-primary"
-                      data-toggle="modal"
-                      data-target="#editParameter"
-                      style="margin-right: 7px"
-                    >
-                      <i class="fas fa-pen"></i>
-                    </a>
-                    <a href="" class="btn btn-sm btn-danger">
-                      <i class="fas fa-trash"></i>
-                    </a>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <!-- END TABLE HOVER -->
-      </div>
-      <div class="col-md-7">
-        <!-- TABLE HOVER -->
-        <div class="panel">
-          <div class="panel-heading">
-            <h3 class="panel-title">Response</h3>
-          </div>
-          <div class="panel-body">
-            <codemirror v-model="responseContent" :extensions="extensions" />
-          </div>
-          <div class="panel-footer" style="display: flex; justify-content: end">
-            <button type="button" class="btn btn-pirmary">Kaydet</button>
-          </div>
-        </div>
-        <!-- END TABLE HOVER -->
-      </div>
+      <ParameterTable />
+      <EndpointContent :endpoint="endpoint" @emit-content="updateEndpointContent" />
     </div>
-    <Modal
-      id="createParameter"
-      title="Parametre Ekle"
-      aria-labelledby="createParameterLabel"
-      label-id="createParameterLabel"
-    >
-      <form>
-        <div class="modal-body">
-          <Input type="text" label="Başlık" for-label="title" />
-          <Input type="text" label="Tür" for-label="type" />
-          <Input type="text" label="Durum" for-label="status" />
-          <Input type="text" label="Açıklama" for-label="description" />
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">
-            Kapat
-          </button>
-          <button type="submit" class="btn btn-primary">Kaydet</button>
-        </div>
-      </form>
-    </Modal>
-    <Modal
-      id="editParameter"
-      title="Parametre Güncelle"
-      aria-labelledby="editParameterLabel"
-      label-id="editParameterLabel"
-    >
-      <form>
-        <div class="modal-body">
-          <Input type="text" label="Başlık" for-label="title" />
-          <Input type="text" label="Tür" for-label="type" />
-          <Input type="text" label="Durum" for-label="status" />
-          <Input type="text" label="Açıklama" for-label="description" />
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">
-            Kapat
-          </button>
-          <button type="submit" class="btn btn-primary">Güncelle</button>
-        </div>
-      </form>
-    </Modal>
   </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
-import Modal from "../components/Modal.vue";
-import Input from "../components/Input.vue";
-import { Codemirror } from "vue-codemirror";
-import { json } from "@codemirror/lang-json";
+import { onMounted, watch } from "vue";
+import { useModuleStore } from "../store/module";
+import { useRoute } from "vue-router";
+import EndpointTitle from "../components/EndpointTitle.vue";
+import EndpointUrlMethod from "../components/EndpointUrlMethod.vue";
+import EndpointContent from "../components/EndpointContent.vue";
+import ParameterTable from "../components/ParameterTable.vue";
+import { useToast } from "vue-toast-notification";
+import { useTitle } from "@vueuse/core";
+import { storeToRefs } from "pinia";
 
-const editEndpoint = ref(true);
-const editTitle = ref(true);
+const moduleStore = useModuleStore();
+const route = useRoute();
+const toast = useToast();
+const { endpoint } = storeToRefs(moduleStore);
 
-const extensions = [json()];
-const responseContent = ref(`{
-    "status": "success",
-    "message": "Giriş yapmak için kullanacağınız kod sms olarak gönderildi.",
-    "data": []
-}`);
+watch(
+  () => route.params,
+  (value) => {
+    if (value.subModule) {
+      moduleStore.getModule(value.subModule).then((data) => {
+        useTitle(data.title);
+      });
+    } else {
+      moduleStore.getModule(value.module).then((data) => {
+        useTitle(data.title);
+      });
+    }
+  }
+);
+
+onMounted(() => {
+  if (route.params.subModule) {
+    moduleStore.getModule(route.params.subModule).then((data) => {
+      useTitle(data.title);
+    });
+  } else {
+    moduleStore.getModule(route.params.module).then((data) => {
+      useTitle(data.title);
+    });
+  }
+});
+
+const updateEndpoint = (editEndpoint) => {
+  if (route.params.subModule) {
+    moduleStore
+      .updateEndpoint(
+        { url: editEndpoint.url, method: editEndpoint.method },
+        route.params.subModule,
+        route.params.app
+      )
+      .then((data) => {
+        toast.success(data.success);
+      });
+  } else {
+    moduleStore
+      .updateEndpoint(
+        { url: editEndpoint.url, method: editEndpoint.method },
+        route.params.module
+      )
+      .then((data) => {
+        toast.success(data.success);
+      });
+  }
+};
+
+const updateEndpointTitle = (title) => {
+  if (route.params.subModule) {
+    moduleStore.updateEndpointTitle(title, route.params.subModule).then((data) => {
+      toast.success(data.success);
+    });
+  } else {
+    moduleStore.updateEndpointTitle(title, route.params.module).then((data) => {
+      toast.success(data.success);
+    });
+  }
+};
+
+const updateEndpointContent = (result_content) => {
+  if (route.params.subModule) {
+    moduleStore
+      .updateEndpointContent(result_content, route.params.subModule)
+      .then((data) => {
+        toast.success(data.success);
+      });
+  } else {
+    moduleStore
+      .updateEndpointContent(result_content, route.params.module)
+      .then((data) => {
+        toast.success(data.success);
+      });
+  }
+};
 </script>

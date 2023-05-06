@@ -27,7 +27,7 @@ const routes = [
                         component: () => import('../views/Panel.vue'),
                     },
                     {
-                        path: ':module',
+                        path: ':module/:subModule?',
                         name: 'Module',
                         component: () => import('../views/Module.vue'),
                     },

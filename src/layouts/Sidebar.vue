@@ -101,8 +101,7 @@ const {
 
 watch(
   () => route.params,
-  (value) => {
-    console.log(value);
+  () => {
     showModuleInput.value = false;
     editableModule.value = true;
     showSubModuleInput.value = false;

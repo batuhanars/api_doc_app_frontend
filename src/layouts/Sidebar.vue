@@ -159,6 +159,7 @@ const addModule = () => {
     storeModule.storeModule(module, route.params.app).then((data) => {
       showModuleInput.value = false;
       module.icon = "";
+      previewIcon.value = ""
       module.title = "Yeni Modül";
       toast.success(data.success);
     });

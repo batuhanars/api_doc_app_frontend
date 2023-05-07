@@ -282,6 +282,15 @@ const closeModuleInput = () => {
   margin-right: 5px;
 }
 
+.add-submodule-input {
+  margin-right: 10px;
+}
+
+.edit-module-input,
+.edit-submodule-input {
+  margin-right: 5px;
+}
+
 .add-module-input {
   width: 100%;
   margin-right: 10px;

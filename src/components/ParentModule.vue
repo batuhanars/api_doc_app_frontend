@@ -185,8 +185,9 @@ const addSubModule = (parent_id) => {
   if (subModule.title != "") {
     subModule.parent_id = parent_id;
     subModule.icon = "icon";
-    subModule.title = "Yeni Alt Modül";
     storeModule.storeModule(subModule, route.params.app).then((data) => {
+      showSubModuleInput.value = false;
+      subModule.title = "Yeni Alt Modül";
       toast.success(data.success);
     });
   } else {

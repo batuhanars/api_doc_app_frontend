@@ -91,7 +91,13 @@ const router = useRouter();
 const storeModule = useModuleStore();
 const toast = useToast();
 
-const { modules } = storeToRefs(storeModule);
+const {
+  modules,
+  showModuleInput,
+  editableModule,
+  showSubModuleInput,
+  editableSubModule,
+} = storeToRefs(storeModule);
 
 const module = reactive({
   parent_id: 0,
@@ -137,7 +143,7 @@ const applyEditIcon = () => {
 const addModule = () => {
   if (module.title != "" && module.icon != "") {
     storeModule.storeModule(module, route.params.app).then((data) => {
-      showModuleInput.value = false;
+      showModuleInput = false;
       module.icon = "";
       module.title = "Yeni Modül";
       toast.success(data.success);
@@ -188,17 +194,15 @@ const deleteModule = (module) => {
   });
 };
 
-console.log(modules.value[0]);
 onMounted(() => {
   storeModule.getModules(route.params.app);
 });
 
-const showModuleInput = ref(false);
-const editableModule = ref(true);
-
 const openModuleInput = () => {
   showModuleInput.value = true;
   editableModule.value = true;
+  showSubModuleInput.value = false;
+  editableSubModule.value = true;
 };
 
 const closeModuleInput = () => {

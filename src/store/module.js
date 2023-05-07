@@ -7,6 +7,10 @@ export const useModuleStore = defineStore('module', {
             modules: [],
             module: {},
             endpoint: {},
+            showModuleInput: false,
+            editableModule: true,
+            showSubModuleInput: false,
+            editableSubModule: true,
         }
     },
     actions: {

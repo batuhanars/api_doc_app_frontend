@@ -75,7 +75,7 @@
 </template>
 
 <script setup>
-import { onMounted, reactive, ref } from "vue";
+import { onMounted, reactive, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useModuleStore } from "../store/module";
 import ParentModule from "../components/ParentModule.vue";
@@ -98,6 +98,21 @@ const {
   showSubModuleInput,
   editableSubModule,
 } = storeToRefs(storeModule);
+
+watch(
+  () => route.params,
+  (value) => {
+    console.log(value);
+    showModuleInput.value = false;
+    editableModule.value = true;
+    showSubModuleInput.value = false;
+    editableSubModule.value = true;
+  }
+);
+
+onMounted(() => {
+  storeModule.getModules(route.params.app);
+});
 
 const module = reactive({
   parent_id: 0,
@@ -143,7 +158,7 @@ const applyEditIcon = () => {
 const addModule = () => {
   if (module.title != "" && module.icon != "") {
     storeModule.storeModule(module, route.params.app).then((data) => {
-      showModuleInput = false;
+      showModuleInput.value = false;
       module.icon = "";
       module.title = "Yeni Modül";
       toast.success(data.success);
@@ -193,10 +208,6 @@ const deleteModule = (module) => {
     }
   });
 };
-
-onMounted(() => {
-  storeModule.getModules(route.params.app);
-});
 
 const openModuleInput = () => {
   showModuleInput.value = true;

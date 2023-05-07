@@ -60,17 +60,17 @@
             <input type="text" class="edit-module-input" v-model="editModuleInput.title" />
           </div>
           <div style="background: #191919; padding: 0 5px; display: flex; margin-left: 5px">
-            <a href="#" class="edit-module-button" @click="editModule(module)">
+            <a href="#" class="edit-module-button" @click.prevent="editModule(module)">
               <i class="fas fa-check" style="font-size: 12px"></i>
             </a>
-            <a href="#" class="delete-module-button" @click="editableModule = true">
+            <a href="#" class="delete-module-button" @click.prevent="editableModule = true">
               <i class="fas fa-times text-danger" style="font-size: 12px"></i>
             </a>
           </div>
         </div>
       </div>
       <div class="module-actions" v-if="$route.params.module == module.slug" v-show="editableModule">
-        <a href="#" class="edit-module-button" @click="toggleEditableModule(module)">
+        <a href="#" class="edit-module-button" @click.prevent="toggleEditableModule(module)">
           <i class="fas fa-pen" style="font-size: 12px"></i>
         </a>
         <a href="#" class="delete-module-button" @click.prevent="$emit('deleteModule', module)">

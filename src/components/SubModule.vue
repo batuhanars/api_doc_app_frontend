@@ -28,7 +28,7 @@
             <a href="#" class="edit-module-button" @click.prevent="editSubModule(subModule)">
               <i class="fas fa-check" style="font-size: 12px"></i>
             </a>
-            <a href="#" class="delete-module-button" @click="editableSubModule = true">
+            <a href="#" class="delete-module-button" @click.prevent="editableSubModule = true">
               <i class="fas fa-times text-danger" style="font-size: 12px"></i>
             </a>
           </div>
@@ -37,7 +37,7 @@
     </RouterLink>
 
     <div style="position: absolute; right: 0" v-if="$route.params.subModule == subModule.slug" v-show="editableSubModule">
-      <a href="#" @click="toggleEditableSubModule">
+      <a href="#" @click.prevent="toggleEditableSubModule">
         <i class="fas fa-pen" style="font-size: 12px"></i>
       </a>
       <a href="#" @click.prevent="$emit('deleteSubmodule', subModule)">

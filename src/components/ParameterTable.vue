@@ -128,6 +128,10 @@ const createParameter = () => {
 const addParameter = () => {
     parameterStore.storeParameter(parameter, route.params.module).then((data) => {
         toast.success(data.success);
+        parameter.title = "";
+        // parameter.type = "string";
+        // parameter.status = "zorunlu";
+        parameter.description = "";
     });
 };
 

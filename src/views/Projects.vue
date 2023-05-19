@@ -8,9 +8,15 @@
         <div class="panel">
           <div class="panel-heading">
             <div style="display: flex; justify-content: space-between">
-              <h3 class="panel-title">
-                <input type="text" placeholder="Ara..." class="form-control" />
-              </h3>
+              <div style="display: flex">
+                <h3 class="panel-title">
+                  <input type="text" placeholder="Ara..." v-model="search" class="form-control" />
+                </h3>
+                <a href="#" class="btn btn-sm btn-light" style="margin-left: 10px" v-show="search != ''"
+                  @click.prevent="search = ''">
+                  <i class="fas fa-arrows-spin"></i>
+                </a>
+              </div>
               <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#createProject" @click="createProject">
                 <i class="fas fa-plus"></i>
                 Proje Ekle
@@ -90,7 +96,7 @@
 import Input from "../components/Input.vue";
 import Modal from "../components/Modal.vue";
 import Project from "../components/Project.vue";
-import { onMounted, reactive, ref } from "vue";
+import { onMounted, reactive, ref, watch } from "vue";
 import { useProjectStore } from "../store/project";
 import { useToast } from "vue-toast-notification";
 import Swal from "sweetalert2";
@@ -108,7 +114,13 @@ const project = reactive({
   logo: "",
   title: "",
 });
+
 const previewLogo = ref();
+const search = ref("");
+
+watch(search, (value) => {
+  projectStore.getProjects(value);
+});
 
 const uploadLogo = (value) => {
   project.logo = value;

@@ -126,13 +126,23 @@ const createParameter = () => {
 };
 
 const addParameter = () => {
-    parameterStore.storeParameter(parameter, route.params.module).then((data) => {
-        toast.success(data.success);
-        parameter.title = "";
-        // parameter.type = "string";
-        // parameter.status = "zorunlu";
-        parameter.description = "";
-    });
+    if (route.params.subModule) {
+        parameterStore.storeParameter(parameter, route.params.subModule).then((data) => {
+            toast.success(data.success);
+            parameter.title = "";
+            // parameter.type = "string";
+            // parameter.status = "zorunlu";
+            parameter.description = "";
+        });
+    } else {
+        parameterStore.storeParameter(parameter, route.params.module).then((data) => {
+            toast.success(data.success);
+            parameter.title = "";
+            // parameter.type = "string";
+            // parameter.status = "zorunlu";
+            parameter.description = "";
+        });
+    }
 };
 
 const editParameter = ({ id, title, type, status, description }) => {
@@ -169,13 +179,21 @@ const deleteParameter = (parameter) => {
 };
 
 watch(
-    () => route.params.module,
+    () => route.params,
     (value) => {
-        parameterStore.getParameters(value);
+        if (route.params.subModule) {
+            parameterStore.getParameters(value.subModule);
+        } else {
+            parameterStore.getParameters(value.module);
+        }
     }
 );
 
 onMounted(() => {
-    parameterStore.getParameters(route.params.module);
+    if (route.params.subModule) {
+        parameterStore.getParameters(route.params.subModule);
+    } else {
+        parameterStore.getParameters(route.params.module);
+    }
 });
 </script>

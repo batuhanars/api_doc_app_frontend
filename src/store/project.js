@@ -17,10 +17,12 @@ export const useProjectStore = defineStore('project', {
         }
     },
     actions: {
-        async getProjects() {
-            await apiClient.get('/projects').then((res) => {
-                this.projects = res.data.projects
-            })
+        async getProjects(project) {
+            await apiClient
+                .get('/projects', { params: { project } })
+                .then((res) => {
+                    this.projects = res.data.projects
+                })
         },
         async getProject(slug) {
             return await apiClient.get(`/projects/${slug}`).then((res) => {

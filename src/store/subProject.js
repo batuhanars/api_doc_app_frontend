@@ -11,10 +11,12 @@ export const useSubProjectStore = defineStore('sub-project', {
         }
     },
     actions: {
-        async getSubProjects(project) {
-            await apiClient.get(`${project}/sub-projects`).then((res) => {
-                this.subProjects = res.data.subProjects
-            })
+        async getSubProjects(project, subProject) {
+            await apiClient
+                .get(`${project}/sub-projects`, { params: { subProject } })
+                .then((res) => {
+                    this.subProjects = res.data.subProjects
+                })
         },
         async getSubProject(slug) {
             return await apiClient.get(`/sub-projects/${slug}`).then((res) => {

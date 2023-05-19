@@ -14,9 +14,15 @@
         <div class="panel">
           <div class="panel-heading">
             <div style="display: flex; justify-content: space-between">
-              <h3 class="panel-title">
-                <input type="text" placeholder="Ara..." class="form-control" />
-              </h3>
+              <div style="display: flex">
+                <h3 class="panel-title">
+                  <input type="text" placeholder="Ara..." v-model="search" class="form-control" />
+                </h3>
+                <a href="#" class="btn btn-sm btn-light" style="margin-left: 10px" v-show="search != ''"
+                  @click.prevent="search = ''">
+                  <i class="fas fa-arrows-spin"></i>
+                </a>
+              </div>
               <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#createApp" @click="createSubProject">
                 <i class="fas fa-plus"></i>
                 Alt Proje Ekle
@@ -88,7 +94,7 @@
 </template>
 
 <script setup>
-import { onMounted, reactive } from "vue";
+import { onMounted, reactive, ref, watch } from "vue";
 import Input from "../components/Input.vue";
 import Modal from "../components/Modal.vue";
 import SubProject from "../components/SubProject.vue";
@@ -109,6 +115,12 @@ const { subProjects, storeValidation, updateValidation } = storeToRefs(subProjec
 const subProject = reactive({
   title: "",
   slug: "",
+});
+
+const search = ref("");
+
+watch(search, (value) => {
+  subProjectStore.getSubProjects(route.params.project, value);
 });
 
 const createSubProject = () => {
